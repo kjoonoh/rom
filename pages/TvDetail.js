@@ -5,44 +5,30 @@ import { View, Text, SafeAreaView, FlatList, Image, StatusBar, Dimensions, Scrol
 
 
 
-const Detail = () => {
+const TvDetail = () => {
     const Route = useRoute()
-    const [ondatas, setOndatas] = useState({})
-    const [persons, setPersons] = useState([])
+    const [tvdatas, setTvdatas] = useState({})
     console.log(Route.params.data)
-    const options = {
-        headers: {
-       accept: 'application/json',
-       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZDRkNGU3NzU2MjE5NWUzNmE4OGY3MmI4YTU2ZjQzNiIsInN1YiI6IjY0NDQ4NWE3MDU4MjI0MDJmYjMyZjQ5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.HiBKa57r3cJVfdbRcm9-gBXo0ToW2e_cWRGWqVx2i3M'
-     }
-   };
 
     const getRink = async () => {
         try {
             
-            const result = await axios.get(`https://api.themoviedb.org/3/movie/${Route.params.data}?language=en-US&page=2`, options)    
-            console.log("++++++++++++++++++테스트", result.data)
-            setOndatas(result.data)
+
+            const options = {
+                   headers: {
+                  accept: 'application/json',
+                  Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1ZDRkNGU3NzU2MjE5NWUzNmE4OGY3MmI4YTU2ZjQzNiIsInN1YiI6IjY0NDQ4NWE3MDU4MjI0MDJmYjMyZjQ5YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.HiBKa57r3cJVfdbRcm9-gBXo0ToW2e_cWRGWqVx2i3M'
+                }
+              };
+            const result = await axios.get(`https://api.themoviedb.org/3/tv/${Route.params.data}?language=en-US&page=1`, options)
+            console.log("++++++++++", result.data)
+            setTvdatas(result.data)
         } catch (error) {
             
         }
     }
-
-    const getPeople = async () => {
-        try {
-            const result = await axios.get(`https://api.themoviedb.org/3/person/popular?language=en-US&page=1`, options)
-            console.log("인물테스트", result.data.results)
-            setPersons(result.data.results)
-        } catch (error) {
-            
-        }
-            
-    }
-
     useEffect(() => {
         getRink()
-        getPeople()
-        
     }, [])
 
     return (
@@ -64,7 +50,7 @@ const Detail = () => {
                         height: "250px",
                     }}
                     source={{
-                      uri: "https://image.tmdb.org/t/p/w200" + ondatas.poster_path
+                      uri: "https://image.tmdb.org/t/p/w200" + tvdatas.poster_path
                     //   uri: "https://image.tmdb.org/t/p/w200/qNBAXBIQlnOThrVvA6mA2B5ggV6.jpg"
 
                     }}
@@ -93,7 +79,7 @@ const Detail = () => {
                         
                     }}
                 >
-                    {ondatas?.overview?.slice(0,150)}
+                    {tvdatas?.overview?.slice(0,150)}
                  </Text>
              </View>
              <View
@@ -136,7 +122,7 @@ const Detail = () => {
                         }}
                     >
 
-                        ${ondatas.budget}
+                        ${tvdatas.budget}
                     </Text>
 
                 </View>
@@ -168,7 +154,7 @@ const Detail = () => {
                         }}
                     >
 
-                        {ondatas.runtime} minute
+                        {tvdatas.runtime} minute
                     </Text>
 
                 </View>
@@ -199,7 +185,7 @@ const Detail = () => {
                         }}
                     >
 
-                        {ondatas.release_date}
+                        {tvdatas.release_date}
                     </Text>
 
                 </View>
@@ -243,7 +229,7 @@ const Detail = () => {
                         
                     }}
                 >
-                    {ondatas?.genres?.map(g => (
+                    {tvdatas?.genres?.map(g => (
                         <View 
                             key={g.name + g.id}
                             style={{
@@ -273,83 +259,13 @@ const Detail = () => {
                     ))}
                  </Text>
              </View>
-             <View
-                style={{
-                    margin: 15,
-                    boderColor: "yellow"
-                    
-                }}
-             > 
-                <Text
-                    style={{
-                        color: "white",
-                        fontWeight: "bold",
-                        fontSize: 18,
-                    }}
-                >
-                    CASTING
-                </Text>
-                <FlatList
-                    data={persons}
-                    horizontal={true}
-                    showsHorizontalScrollIndicator={false}
-                    renderItem={({item}) => (
-                        <View
-                            style={{
-                                height: "170px",
-                                
-                                margin: "5px"
-                            }}
-                        >
-                         <Image
-                            style={{
-                                width: "80px",
-                                height: "80px",
-                                resizeMode: "cover",
-                                borderRadius: 40,
-                                margin: 5,
-                            }}
-                            source={{
-                                uri: "https://image.tmdb.org/t/p/w500" + item.profile_path
+                        
 
-                            }}
-                         />
+            
 
-                        <Text
-                            style={{
-                                color: "white"
-                            }}
-                        >
-                            {item.name}
-                        </Text>
-
-                         
-
-                        </View>
-                    )}
-                
-                
-                />
-                {/* {persons && persons.map(person => (
-                    //     <FlatList 
-                    //         data={nowPlayings}
-                    //         horizontal={true}
-                    //         showsHorizontalScrollIndicator={false}
-                    //         renderItem={({item}) => (
-                    //     />
-
-                    //         <Text
-                    //             style={{
-                    //                 color: "white"
-                    //             }}
-                    //         >
-                    //             {person.name}
-                    //         </Text>
-                    //     </FlatList>
-
-
-                    // ))} */}
-             </View>
+            
+            
+          
             </ScrollView>              
         </SafeAreaView>
 
@@ -357,4 +273,4 @@ const Detail = () => {
 
     );
 };
-export default Detail;
+export default TvDetail;

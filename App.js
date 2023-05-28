@@ -2,9 +2,10 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons';
-import MovieScreen from './pages/MovieScreen';
-import TvScreen from './pages/TvScreen';
+import MovieStack from './stacks/MovieStack';
 import TvStack from './stacks/TvStack';
+import SearchScreen from './stacks/SearchScreen';
+
 
 const Tab = createBottomTabNavigator()
 
@@ -20,12 +21,17 @@ const App = () => {
       >
         <Tab.Screen 
           name="Movie"
-          // component={MovieScreen}
-          component={TvStack}
+          component={MovieStack}
+          
         />
         <Tab.Screen 
           name="Tv"
-          component={TvScreen}
+          component={TvStack}
+          
+        />
+        <Tab.Screen 
+          name="Search"
+          component={SearchScreen}
         />
       </Tab.Navigator>
       
